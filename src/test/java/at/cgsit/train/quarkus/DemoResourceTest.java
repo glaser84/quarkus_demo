@@ -12,7 +12,7 @@ public class DemoResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/C:/Program Files/Git/helloDemo")
+          .when().get("/helloDemo")
           .then()
              .statusCode(200)
              .body(is("Hello RESTEasy"));
