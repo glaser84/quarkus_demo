@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * @Author CGS-IT Solutions @2019
  */
 @Entity
-@Table( name="chat_message")
+@Table( name="chat_message_david")
 public class ChatMessageEntity {
 
     @Id
