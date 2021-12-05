@@ -23,11 +23,7 @@ services:
       - POSTGRES_USER=sc_admin
       - POSTGRES_PASSWORD=sc_admin
     volumes:
-<<<<<<< HEAD
       - "./pgdata:/var/lib/postgresql/data"
-=======
-              - "./pgdata:/var/lib/postgresql/data"    
->>>>>>> origin/main
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U simplechat"]
       interval: 15s
@@ -37,13 +33,7 @@ services:
       - "5432:5432"
     networks:
       - quarkus
-<<<<<<< HEAD
 
 networks:
   quarkus:
-=======
-      
-networks:
-   quarkus:
->>>>>>> origin/main
     driver: bridge
