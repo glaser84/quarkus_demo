@@ -1,6 +1,6 @@
 package at.cgsit.train.quarkus.service;
 
-import at.cgsit.train.quarkus.persistence.entities.ChatMessageEntity;
+import at.cgsit.train.quarkus.entities.ChatMessageEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
