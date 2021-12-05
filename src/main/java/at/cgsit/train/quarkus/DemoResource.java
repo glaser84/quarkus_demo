@@ -1,6 +1,5 @@
 package at.cgsit.train.quarkus;
 
-import at.cgsit.train.quarkus.service.DemoService;
 import at.cgsit.train.quarkus.service.DemoServiceDb;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
