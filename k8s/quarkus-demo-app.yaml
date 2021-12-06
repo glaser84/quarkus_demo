@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-service
+  labels:
+    app: quarkus-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quarkus-service
+  template:
+    metadata:
+      labels:
+        app: quarkus-service
+        io.kompose.network/quarkus: "true"
+    spec:
+      containers:
+        - name: quarkus-service
+          image: public.ecr.aws/e8v6d9d7/quarkus-demo-jvm:1.0.0 # quarkus-demo-jvm:1.0.0 # sha256:76bd2f142864206b3a862a006b1d89d28e13973341004e6fb58a010342c62abd  # cgs/quarkus-demo-jvm:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: quarkus-db-secret
+                  key: postgres-user
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: quarkus-db-secret
+                  key: postgres-password
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: quarkus-demo-config
+                  key: quarkus-demo-url
+          #- name: QUARKUS_DATASOURCE_JDBC_URL
+          #   value: jdbc:postgresql://quarkus-db:5432/simplechat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quarkus-service
+  labels:
+    app: quarkus-service
+spec:
+  type: LoadBalancer  # NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30100  # must be between 30000 and 32767
+  selector:
+    app: quarkus-service

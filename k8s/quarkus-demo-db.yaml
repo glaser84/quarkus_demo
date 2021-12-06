@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-db
+  labels:
+    io.kompose.service: quarkus-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: quarkus-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/quarkus: "true"
+        io.kompose.service: quarkus-db
+    spec:
+      containers:
+        - name: quarkus-db
+          image: postgres:10.5
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: simplechat
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: quarkus-db-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: quarkus-db-secret
+                  key: postgres-password
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready -U simplechat
+            failureThreshold: 6
+            periodSeconds: 15
+            timeoutSeconds: 5
+          #volumeMounts:
+          #  - mountPath: /var/lib/postgresql/data
+          #    name: quarkus-db-claim0
+      #volumes:
+      # - name: quarkus-db-claim0
+      #   persistentVolumeClaim:
+      #     claimName: quarkus-db-claim0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quarkus-db
+  labels:
+    io.kompose.service: quarkus-db
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: quarkus-db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: quarkus-db-claim0
+  name: quarkus-db-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
