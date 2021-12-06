@@ -58,6 +58,6 @@ public class DemoResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String helloSimple2() {
-        return "Hello helloDemo TEST2";
+        return "Hello helloDemo TEST3";
     }
 }
