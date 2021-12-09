@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: quarkus-service
-          image: public.ecr.aws/e8v6d9d7/david-demo-jvm:1.0.0 # quarkus-demo-jvm:1.0.0 # sha256:76bd2f142864206b3a862a006b1d89d28e13973341004e6fb58a010342c62abd  # cgs/quarkus-demo-jvm:latest
+          image: public.ecr.aws/e8v6d9d7/david-demo-jvm:1.0.1 # quarkus-demo-jvm:1.0.1 # sha256:76bd2f142864206b3a862a006b1d89d28e13973341004e6fb58a010342c62abd  # cgs/quarkus-demo-jvm:latest
           ports:
             - containerPort: 8080
           env:
