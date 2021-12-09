@@ -3,15 +3,15 @@ def test_Variable = "test"
 pipeline {
     // agent any 
     // agent { label 'aws' }
-    agent any     
+    agent any
 
     parameters {
         booleanParam(defaultValue: false,
-                     description: 'If checked downstream pipeline is also',
-                    name: 'build_downstream'
+                description: 'If checked downstream pipeline is also',
+                name: 'build_downstream'
         )
         string(name: 'STATEMENT',
-            defaultValue: 'hello; ls /', description: 'What should I say?'
+                defaultValue: 'hello; ls /', description: 'What should I say?'
         )
     }
 
@@ -44,10 +44,10 @@ pipeline {
             }
             post {
                 always {
-                  script {
-                       try{
+                    script {
+                        try {
                             junit "**/failsafe-reports/*.xml"
-                        }catch(Exception e) {
+                        } catch (Exception e) {
                             echo 'failsafe-reports not found'
                         }
                     }
@@ -56,16 +56,18 @@ pipeline {
         }
         stage('Build quarkus container image') {
             steps {
-                echo "Build and Unit Test"           
-                "mvn -B package -Dquarkus.container-image.build=true -DskipTests=true"
-        }                       
-        stage('Docker push quarkus container image') {
-            steps {
-                echo "Docker push quarkus container image"
-                sh "mvn -B package -Dquarkus.container-image.push=true -DskipTests=true"
+                echo "Build and Unit Test"
+                "mvn -B package -Dquarkus.container-image.build=true -Dskip
+                e "
+            }
+            stage('Docker push quarkus container image') {
+                steps {
+                    echo "Docker push quarkus container image"
+                    sh "mvn -B package -Dquarkus.container-image.push=true -DskipTests=true"
+                }
             }
         }
-    }       
+    }
     post {
         failure {
             echo "Build POST  FAILURE action "
