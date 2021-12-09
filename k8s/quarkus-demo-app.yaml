@@ -13,7 +13,6 @@ spec:
     metadata:
       labels:
         app: dquarkus-service
-        io.kompose.network/david: "true"
     spec:
       containers:
         - name: quarkus-service
