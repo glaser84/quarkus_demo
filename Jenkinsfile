@@ -54,15 +54,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Downstream Jobs') {
-            when {
-                expression { params.build_downstream.toBoolean() == true}
-            }
-            steps {
-                echo "build downstream jobs"
-                build job: "test", wait: true
-            }
-        }
+
 
         stage('Build quarkus container image') {
             steps {
