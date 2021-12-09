@@ -35,7 +35,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: david-demo-config
-                  key: david-demo-url
+                  key: quarkus-demo-url
           #- name: QUARKUS_DATASOURCE_JDBC_URL
           #   value: jdbc:postgresql://quarkus-db:5432/simplechat
 ---
