@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: david-service
+  labels:
+    app: david-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: david-service
+  template:
+    metadata:
+      labels:
+        app: david-service
+        io.kompose.network/david: "true"
+    spec:
+      containers:
+        - name: david-service
+          image: public.ecr.aws/e8v6d9d7/david-demo-jvm:1.0.0 # quarkus-demo-jvm:1.0.0 # sha256:76bd2f142864206b3a862a006b1d89d28e13973341004e6fb58a010342c62abd  # cgs/quarkus-demo-jvm:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: david-db-secret
+                  key: postgres-user
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: david-db-secret
+                  key: postgres-password
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: david-demo-config
+                  key: david-demo-url
+          #- name: QUARKUS_DATASOURCE_JDBC_URL
+          #   value: jdbc:postgresql://quarkus-db:5432/simplechat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: david-service
+  labels:
+    app: david-service
+spec:
+  type: LoadBalancer  # NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30100  # must be between 30000 and 32767
+  selector:
+    app: david-service

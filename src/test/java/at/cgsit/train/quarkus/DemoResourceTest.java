@@ -2,6 +2,7 @@ package at.cgsit.train.quarkus;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -9,6 +10,12 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 public class DemoResourceTest {
 
+@Test
+@Disabled
+public void testDisabled() {
+    throw new RuntimeException("");
+}
+    
     @Test
     public void testHelloEndpoint() {
         given()
