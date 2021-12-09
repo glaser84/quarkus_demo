@@ -16,13 +16,15 @@ public void testDisabled() {
     throw new RuntimeException("");
 }
     
-    @Disabled
-    public void testHelloEndpoint() {
-        given()
-          .when().get("/helloDemo")
-          .then()
-             .statusCode(200)
-             .body(is("Hello RESTEasy"));
-    }
+    
+@Test
+@Disabled
+public void testHelloEndpoint() {
+    given()
+    .when().get("/helloDemo")
+    .then()
+    .statusCode(200)
+    .body(is("Hello RESTEasy"));
+}
 
 }
