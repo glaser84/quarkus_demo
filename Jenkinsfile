@@ -68,7 +68,6 @@ pipeline {
             }
         }
     }
-}
 post {
     failure {
         echo "Build POST  FAILURE action "
@@ -76,5 +75,5 @@ post {
     always {
         echo "Build POST action"
     }
-}
+ }
 }
