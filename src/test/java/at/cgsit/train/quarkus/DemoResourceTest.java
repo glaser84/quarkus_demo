@@ -9,6 +9,12 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 public class DemoResourceTest {
 
+@Test
+@Disabled
+public void testDisabled() {
+    throw new RuntimeException("");
+}
+    
     @Test
     public void testHelloEndpoint() {
         given()
