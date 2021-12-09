@@ -69,7 +69,21 @@ pipeline {
             	echo "Deploy to Nexus"
                 sh 'mvn -B -N wagon:upload -Dproject.nexus.wagon-upload-serverId=\\${project.nexus.snapshot-serverId} -Dproject.nexus.wagon-upload-url=\\${project.nexus.snapshot-repository}'
             }
-        }        
+        }
+        stage('Build quarkus container image') {
+            steps {
+                echo "Build and Unit Test"           
+                "mvn -B package -Dquarkus.container-image.build=true -DskipTests=true"
+        }            
+            
+        stage('Docker push quarkus container image') {
+            steps {
+                echo "Docker push quarkus container image"
+                sh "mvn -B package -Dquarkus.container-image.push=true -DskipTests=true"
+        }
+
+}
+
         
     }
     post {
