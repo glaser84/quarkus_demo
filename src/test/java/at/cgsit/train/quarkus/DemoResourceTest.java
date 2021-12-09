@@ -16,7 +16,7 @@ public void testDisabled() {
     throw new RuntimeException("");
 }
     
-    @Test
+    @Disabled
     public void testHelloEndpoint() {
         given()
           .when().get("/helloDemo")
