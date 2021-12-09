@@ -2,6 +2,7 @@ package at.cgsit.train.quarkus;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disable;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
