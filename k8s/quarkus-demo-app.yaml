@@ -50,6 +50,6 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30100  # must be between 30000 and 32767
+      nodePort: 30654  # must be between 30000 and 32767
   selector:
     app: david-quarkus-service
