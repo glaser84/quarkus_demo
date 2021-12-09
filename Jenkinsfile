@@ -1,23 +1,9 @@
-def test_Variable = "test"
-
 pipeline {
-    // agent any 
-    // agent { label 'aws' }
     agent any
 
-    parameters {
-        booleanParam(defaultValue: false,
-                description: 'If checked downstream pipeline is also',
-                name: 'build_downstream'
-        )
-        string(name: 'STATEMENT',
-                defaultValue: 'hello; ls /', description: 'What should I say?'
-        )
-    }
-
     tools {
-        maven 'maven_3.8.x'  // 'maven_3.6.3'
-        jdk 'java11'    // 'jdk_1.8.0'
+        maven 'maven_3.8.x'
+        jdk 'java11'
     }
 
     stages {
@@ -27,53 +13,51 @@ pipeline {
                 script {
                     sh 'df -h'
                     sh 'java -version'
-                    sh 'mvn --version'
                 }
             }
         }
-        stage('build') {
+
+        stage('Build Project') {
             steps {
                 echo 'This is the build step'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+
         stage('Build and Unit Test') {
             steps {
                 echo "Build and Unit Test"
-                sh "mvn -B -nsu clean install"
+                sh "mvn -B -nsu install"
             }
             post {
                 always {
-                    script {
-                        try {
-                            junit "**/failsafe-reports/*.xml"
-                        } catch (Exception e) {
-                            echo 'failsafe-reports not found'
-                        }
-                    }
+                    junit "**/surefire-reports/*.xml"
                 }
             }
         }
         stage('Build quarkus container image') {
             steps {
                 echo "Build and Unit Test"
-                "mvn -B package -Dquarkus.container-image.build=true -DskipTests=true"
+                sh "mvn -B package -Dquarkus.container-image.build=true -DskipTests=true"
             }
         }
-
         stage('Docker push quarkus container image') {
             steps {
                 echo "Docker push quarkus container image"
                 sh "mvn -B package -Dquarkus.container-image.push=true -DskipTests=true"
             }
         }
+
     }
-post {
-    failure {
-        echo "Build POST  FAILURE action "
+    post {
+        failure {
+            echo "Build POST  FAILURE action "
+        }
+        always {
+            echo "Build POST action"
+        }
     }
-    always {
-        echo "Build POST action"
-    }
- }
 }
+
+
+
