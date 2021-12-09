@@ -57,23 +57,24 @@ pipeline {
         stage('Build quarkus container image') {
             steps {
                 echo "Build and Unit Test"
-                "mvn -B package -Dquarkus.container-image.build=true -Dskip
-                e "
+                "mvn -B package -Dquarkus.container-image.build=true -DskipTests=true"
             }
-            stage('Docker push quarkus container image') {
-                steps {
-                    echo "Docker push quarkus container image"
-                    sh "mvn -B package -Dquarkus.container-image.push=true -DskipTests=true"
-                }
+        }
+
+        stage('Docker push quarkus container image') {
+            steps {
+                echo "Docker push quarkus container image"
+                sh "mvn -B package -Dquarkus.container-image.push=true -DskipTests=true"
             }
         }
     }
-    post {
-        failure {
-            echo "Build POST  FAILURE action "
-        }
-        always {
-            echo "Build POST action"
-        }
+}
+post {
+    failure {
+        echo "Build POST  FAILURE action "
     }
+    always {
+        echo "Build POST action"
+    }
+}
 }
