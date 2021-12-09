@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: quarkus-service
+  name: david-quarkus-service
   labels:
-    app: quarkus-service
+    app: david-quarkus-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: quarkus-service
+      app: david-quarkus-service
   template:
     metadata:
       labels:
-        app: dquarkus-service
+        app: david-quarkus-service
     spec:
       containers:
-        - name: quarkus-service
+        - name: david-quarkus-service
           image: public.ecr.aws/e8v6d9d7/david-demo-jvm:1.0.1 # quarkus-demo-jvm:1.0.1 # sha256:76bd2f142864206b3a862a006b1d89d28e13973341004e6fb58a010342c62abd  # cgs/quarkus-demo-jvm:latest
           ports:
             - containerPort: 8080
           env:
-            - name: USER_NAME
+            - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: david-db-secret
                   key: postgres-user
-            - name: USER_PWD
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: david-db-secret
@@ -41,9 +41,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: quarkus-service
+  name: david-quarkus-service
   labels:
-    app: quarkus-service
+    app: david-quarkus-service
 spec:
   type: LoadBalancer  # NodePort
   ports:
@@ -52,4 +52,4 @@ spec:
       targetPort: 8080
       nodePort: 30100  # must be between 30000 and 32767
   selector:
-    app: quarkus-service
+    app: david-quarkus-service
